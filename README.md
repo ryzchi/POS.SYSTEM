@@ -3,6 +3,7 @@ Point of Sale (POS) System
 This Point of Sale (POS) System is a simple console-based program that allows an admin to manage a shopping cart. It includes basic functionalities such as adding, removing, viewing, and checking out items.
 
 Features:
+
 Admin Login - Requires a username and password before accessing the system.
 Add Item - Allows the admin to input an item's name and price to add it to the cart.
 Remove Item - Displays the cart's contents and lets the admin remove an item by selecting its number.

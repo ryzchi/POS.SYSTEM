@@ -40,24 +40,25 @@
 
     static void MainMenu()
     {
-        int choice;
+        int userAction;
         do
         {
             Console.WriteLine("\nMain Menu:");
-            Console.WriteLine("1. Add Item to Cart");
-            Console.WriteLine("2. Remove Item in Cart");
-            Console.WriteLine("3. View Cart");
-            Console.WriteLine("4. Checkout");
-            Console.WriteLine("5. Exit");
-            Console.Write("Enter your choice: ");
 
-            if (!int.TryParse(Console.ReadLine(), out choice))
+            string[] actions = new string[] { "[1] Add Item", "[2] Remove Item", "[3] View Cart", "[4] Checkout", "[5] Exit" };
+
+            foreach (var action in actions)
+
             {
-                Console.WriteLine("Invalid input. Please enter a number.");
+                Console.WriteLine(action);
                 continue;
             }
 
-            switch (choice)
+            Console.Write("Enter Action: ");
+
+            userAction = Convert.ToInt16(Console.ReadLine());
+
+            switch (userAction)
             {
                 case 1:
                     AddItem();
@@ -78,7 +79,7 @@
                     Console.WriteLine("Invalid choice. Please try again.");
                     break;
             }
-        } while (choice != 5);
+        } while (userAction != 5);
     }
 
     static void AddItem()
@@ -156,3 +157,4 @@
         Console.WriteLine("Checkout complete. Cart is now empty.");
     }
 }
+

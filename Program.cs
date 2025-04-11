@@ -1,149 +1,167 @@
 ﻿using System;
 using System.Collections.Generic;
+using POS.BusinessDataLogic;
 
-class POSSystem
+public class POSSystem
 {
-    static List<string> cart = new List<string>();
-    static List<double> prices = new List<double>();
-
-    const string ADMIN_USERNAME = "admin";
-    const string ADMIN_PASSWORD = "admin123";
+    static List<string> cart = new List<string>();  // List to store cart items  
+    static List<double> prices = new List<double>();  // List to store item prices  
+    static POS.BusinessDataLogic.POSProcess account = new POS.BusinessDataLogic.POSProcess();
 
     static void Main()
     {
-        Console.WriteLine("Welcome to the Point of Sale System");
-        if (Login())
+        string Username, Password;
+        Console.WriteLine("Welcome to the Point of Sale System!");
+
+        do
         {
-            MainMenu();
-        }
-        else
-        {
-            Console.WriteLine("Login failed. Exiting system.");
-        }
+            Console.Write("Username: ");
+            Username = Console.ReadLine();
+            Console.Write("Password: ");
+            Password = Console.ReadLine();
+
+            if (!account.LogInValid(Username, Password))
+            {
+                Console.WriteLine("Invalid Username or Password.");
+
+                if (account.LogInAttempts())
+                {
+                    Console.WriteLine("Too many attempts. Please try again later.");
+                    return;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Welcome, Admin!");
+                MainMenu();  // Login successful, proceed to main menu
+                return;
+            }
+
+        } while (true); 
     }
 
-    static bool Login()
-    {
-        Console.Write("Enter username: ");
-        string username = Console.ReadLine();
-        Console.Write("Enter password: ");
-        string password = Console.ReadLine();
-
-        if (username == ADMIN_USERNAME && password == ADMIN_PASSWORD)
-        {
-            Console.WriteLine("Welcome, Admin!");
-            return true;
-        }
-        else
-        {
-            Console.WriteLine("Invalid credentials.");
-            return false;
-        }
-    }
-
-    static void MainMenu()
+        static void MainMenu()
     {
         int userAction;
         do
         {
             Console.WriteLine("\nMain Menu:");
 
+            // Define menu options  
             string[] actions = new string[] { "[1] Add Item", "[2] Remove Item", "[3] View Cart", "[4] Checkout", "[5] Exit" };
 
+            // Display each action in the menu  
             foreach (var action in actions)
             {
                 Console.WriteLine(action);
+                continue;
             }
-            Console.Write("Enter Action: ");
 
+            // Ask user to choose an action  
+            Console.Write("Enter Action: ");
             userAction = Convert.ToInt16(Console.ReadLine());
 
+            // Handle user's choice  
             switch (userAction)
             {
                 case 1:
-                    Console.Write("Enter item name: ");
-                    string itemName = Console.ReadLine();
-                    Console.Write("Enter item price: ");
-
-                    double itemPrice = Convert.ToDouble(Console.ReadLine());
-
-                    cart.Add(itemName);
-                    prices.Add(itemPrice);
-                    Console.WriteLine("Item added to cart successfully.");
+                    AddItem();
                     break;
                 case 2:
-                    if (cart.Count == 0)
-                    {
-                        Console.WriteLine("Cart is empty. Nothing to remove.");
-                        break;
-                    }
-
-                    Console.WriteLine("\nCart Items:");
-                    for (int i = 0; i < cart.Count; i++)
-                    {
-                        Console.WriteLine($"{i + 1}. {cart[i]} = Php{prices[i]:F2}");
-                    }
-
-                    Console.Write("Enter the number of the item to remove: ");
-                    int index = Convert.ToInt16(Console.ReadLine());
-
-                    if (index < 1 || index > cart.Count)
-                    {
-                        Console.WriteLine("Invalid item number. Please try again.");
-                        break;
-                    }
-
-                    string removedItem = cart[index - 1];
-                    cart.RemoveAt(index - 1);
-                    prices.RemoveAt(index - 1);
-                    Console.WriteLine($"Removed {removedItem} from the cart.");
+                    RemoveItem();
                     break;
-
                 case 3:
-                    Console.WriteLine("\nCart Items:");
-                    if (cart.Count == 0)
-                    {
-                        Console.WriteLine("Cart is empty.");
-                    }
-                    else
-                    {
-                        double total = 0;
-                        for (int i = 0; i < cart.Count; i++)
-                        {
-                            Console.WriteLine($"{i + 1}. {cart[i]} = Php{prices[i]:F2}");
-                            total += prices[i];
-                        }
-                        Console.WriteLine($"Total: Php{total:F2}");
-                    }
+                    ViewCart();
                     break;
-
                 case 4:
-                    if (cart.Count == 0)
-                    {
-                        Console.WriteLine("Cart is empty. Nothing to checkout.");
-                        break;
-                    }
-
-                    Console.WriteLine("Proceeding to checkout...");
-                    cart.Clear();
-                    prices.Clear();
-                    Console.WriteLine("Checkout complete. Cart is now empty.");
+                    Checkout();
                     break;
-
                 case 5:
                     Console.WriteLine("Exiting system. Goodbye!");
                     break;
-
                 default:
                     Console.WriteLine("Invalid choice. Please try again.");
                     break;
             }
+        } while (userAction != 5);  // Loop until user chooses to exit  
+    }
 
-        } while (userAction != 5);
+    static void AddItem()
+    {
+        Console.Write("Enter item name: ");
+        string itemName = Console.ReadLine();
+        Console.Write("Enter item price: ");
+
+        // Validate item price input  
+        if (!double.TryParse(Console.ReadLine(), out double itemPrice))
+        {
+            Console.WriteLine("Invalid price input. Please try again.");
+            return;
+        }
+
+        cart.Add(itemName);
+        prices.Add(itemPrice);
+
+        Console.WriteLine("Item added to cart successfully.");
+    }
+
+    static void RemoveItem()
+    {
+        // Check if the cart is empty  
+        if (cart.Count == 0)
+        {
+            Console.WriteLine("Cart is empty. Nothing to remove.");
+            return;
+        }
+
+        ViewCart();
+        Console.Write("Enter the number of the item to remove: ");
+
+        // Validate item number input  
+        if (!int.TryParse(Console.ReadLine(), out int index) || index < 1 || index > cart.Count)
+        {
+            Console.WriteLine("Invalid item number. Please try again.");
+            return;
+        }
+
+        string removedItem = cart[index - 1];
+        cart.RemoveAt(index - 1);
+        prices.RemoveAt(index - 1);
+        Console.WriteLine($"Removed {removedItem} from the cart.");
+    }
+
+    static void ViewCart()
+    {
+        Console.WriteLine("\nCart Items:");
+        if (cart.Count == 0)  // Check if cart is empty  
+        {
+            Console.WriteLine("Cart is empty.");
+        }
+        else
+        {
+            double total = 0;  // Initialize total price  
+            for (int i = 0; i < cart.Count; i++)
+            {
+                // Display item name and price  
+                Console.WriteLine($"{i + 1}. {cart[i]} = Php{prices[i]:F2}");
+                total += prices[i];  // Calculate total  
+            }
+            Console.WriteLine($"Total: Php{total:F2}");  // Display total price  
+        }
+    }
+
+    static void Checkout()
+    {
+        if (cart.Count == 0)
+        {
+            Console.WriteLine("Cart is empty. Nothing to checkout.");
+            return;
+        }
+
+        ViewCart();
+        Console.WriteLine("Proceeding to checkout...");
+        cart.Clear();
+        prices.Clear();
+        Console.WriteLine("Checkout complete. Cart is now empty.");
     }
 }
-
-
-
-
-

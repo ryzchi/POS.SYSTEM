@@ -6,15 +6,22 @@ public class POSSystem
 {
     static List<string> cart = new List<string>();  // List to store cart items  
     static List<double> prices = new List<double>();  // List to store item prices  
+<<<<<<< HEAD
     static POS.BusinessDataLogic.POSProcess account = new POS.BusinessDataLogic.POSProcess();
 
     static void Main()
     {
         string Username, Password;
+=======
+
+    static void Main()
+    {
+>>>>>>> b8cf9e30921696de99513a5610668c0ac27b2b84
         Console.WriteLine("Welcome to the Point of Sale System!");
 
         do
         {
+<<<<<<< HEAD
             Console.Write("Username: ");
             Username = Console.ReadLine();
             Console.Write("Password: ");
@@ -28,6 +35,23 @@ public class POSSystem
                 {
                     Console.WriteLine("Too many attempts. Please try again later.");
                     return;
+=======
+            // Ask for username and password  
+            Console.WriteLine("Username: ");
+            string inputUsername = Console.ReadLine();
+            Console.WriteLine("Password: ");
+            string inputPassword = Console.ReadLine();
+
+            if (!POSProcess.LogInValid(inputUsername, inputPassword))
+            {
+                Console.WriteLine("Your Username or Password is invalid. Please check your details carefully.");
+
+                // Check if the 3 attempts limit is reached
+                if (POSProcess.LogInAttempts())
+                {
+                    Console.WriteLine("You have reached the maximum login attempts. Please try again later.");
+                    return;  // Exit after 3 failed attempts
+>>>>>>> b8cf9e30921696de99513a5610668c0ac27b2b84
                 }
             }
             else
@@ -36,11 +60,17 @@ public class POSSystem
                 MainMenu();  // Login successful, proceed to main menu
                 return;
             }
+<<<<<<< HEAD
 
         } while (true); 
     }
 
         static void MainMenu()
+=======
+        } while (true);  // Keep looping until login is successful or 3 attempts are reached
+    }
+    static void MainMenu()
+>>>>>>> b8cf9e30921696de99513a5610668c0ac27b2b84
     {
         int userAction;
         do

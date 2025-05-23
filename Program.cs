@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using POS.BusinessDataLogic;
+using POSBusinessDataLogic;
 
 public class POSSystem
 {
-    static List<string> cart = new List<string>();  // List to store cart items  
-    static List<double> prices = new List<double>();  // List to store item prices  
+    static List<string> cart = new List<string>(); 
+    static List<double> prices = new List<double>(); 
     static POSProcess account = new POSProcess();
 
     static void Main()

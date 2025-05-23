@@ -1,26 +1,55 @@
-﻿using System;
-namespace POS.BusinessDataLogic
+﻿using POSCommon;
+using POSDataService;
+
+namespace POSBusinessDataLogic
 {
     public class POSProcess
     {
-        POSDataService.POSDataService account = new POSDataService.POSDataService();
+
+        POSAccData AccountData = new POSAccData();
         static short loginAttempts = 0;
 
         public bool LogInValid(string userInput, string passInput)
         {
-            return account.ValidateUserAccount(userInput, passInput);
+            var account = GetPOSAccount(userInput, passInput);
+
+            if (account.Username != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private POSAccount GetPOSAccount(string username, string password)
+        {
+            var POSAccounts = AccountData.GetAllAccounts();
+            var accountFound = new POSAccount();
+
+            foreach (var account in POSAccounts)
+            {
+                if (account.Username == username && account.Password == password)
+                {
+                    accountFound = account;
+                }
+            }
+            return accountFound;
         }
 
         public bool LogInAttempts()
         {
             loginAttempts++;
 
-            if (loginAttempts == 3)
+            if (loginAttempts == 5)
             {
                 loginAttempts = 0;
                 return true;
             }
+
             return false;
         }
+
+
+
     }
 }

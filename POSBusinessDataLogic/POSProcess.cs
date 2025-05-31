@@ -6,7 +6,7 @@ namespace POSBusinessDataLogic
     public class POSProcess
     {
 
-        POSAccData AccountData = new POSAccData();
+        IPOSAccData AccountData = new POSMemoryData();
         static short loginAttempts = 0;
 
         public bool LogInValid(string userInput, string passInput)
@@ -23,18 +23,19 @@ namespace POSBusinessDataLogic
 
         private POSAccount GetPOSAccount(string username, string password)
         {
-            var POSAccounts = AccountData.GetAllAccounts();
-            var accountFound = new POSAccount();
+            var POSAccounts = AccountData.GetAccounts();
 
             foreach (var account in POSAccounts)
             {
                 if (account.Username == username && account.Password == password)
                 {
-                    accountFound = account;
+                    return account;
                 }
             }
-            return accountFound;
+
+            return new POSAccount();
         }
+
 
         public bool LogInAttempts()
         {

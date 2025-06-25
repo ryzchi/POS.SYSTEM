@@ -62,9 +62,19 @@ namespace POSSystem
         static void AddItem()
         {
             Console.Write("Enter item name: ");
-            string name = Console.ReadLine();
+            string? name = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                Console.WriteLine("Item name cannot be empty. Press Enter to retry.");
+                Console.ReadLine();
+                return;
+            }
+
             Console.Write("Enter price: ");
-            if (double.TryParse(Console.ReadLine(), out double price))
+            string? priceInput = Console.ReadLine();
+
+            if (double.TryParse(priceInput, out double price))
             {
                 manager.AddItem(name, price);
                 Console.WriteLine("Item added! Press Enter to continue.");
@@ -73,6 +83,7 @@ namespace POSSystem
             {
                 Console.WriteLine("Invalid price. Press Enter to retry.");
             }
+
             Console.ReadLine();
         }
 
@@ -117,18 +128,23 @@ namespace POSSystem
         {
             List<CartItems> items = manager.ViewItems();
             Console.WriteLine("\n--- Cart Items ---");
+
             if (items.Count == 0)
             {
                 Console.WriteLine("Cart is empty.");
             }
             else
             {
+                double total = 0;
                 for (int i = 0; i < items.Count; i++)
                 {
                     Console.WriteLine($"{i + 1}. {items[i].ItemName} - Php {items[i].Price:F2}");
+                    total += items[i].Price;
                 }
+                Console.WriteLine($"Total: Php {total:F2}");
             }
-            Console.WriteLine("Press Enter to continue.");
+
+            Console.WriteLine("\nPress Enter to continue.");
             Console.ReadLine();
         }
 

@@ -1,4 +1,6 @@
-﻿namespace POSCommon
+﻿using System;
+
+namespace POSCommon
 {
     public class CartItems
     {

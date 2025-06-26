@@ -21,7 +21,10 @@ namespace POSSystem
             do
             {
                 Console.WriteLine("\n===== POINT OF SALE SYSTEM =====");
-                string[] actions = new string[] { "[1] Add Item", "[2] Remove Item", "[3] View Cart", "[4] Checkout", "[5] Exit" };
+                string[] actions = new string[]
+                {
+                    "[1] Add Item", "[2] Remove Item", "[3] View Cart", "[4] Checkout", "[5] Exit"
+                };
 
                 foreach (var action in actions)
                 {
@@ -32,6 +35,7 @@ namespace POSSystem
                 if (!int.TryParse(Console.ReadLine(), out userAction))
                 {
                     Console.WriteLine("Invalid input. Please enter a number between 1-5.");
+                    Thread.Sleep(1500);
                     continue;
                 }
 
@@ -56,11 +60,14 @@ namespace POSSystem
                         Console.WriteLine("Invalid choice. Please try again.");
                         break;
                 }
+
             } while (userAction != 5);
         }
 
         static void AddItem()
         {
+            Console.WriteLine("=== Add Item ===");
+
             Console.Write("Enter item name: ");
             string? name = Console.ReadLine();
 
@@ -74,16 +81,25 @@ namespace POSSystem
             Console.Write("Enter price: ");
             string? priceInput = Console.ReadLine();
 
-            if (double.TryParse(priceInput, out double price))
-            {
-                manager.AddItem(name, price);
-                Console.WriteLine("Item added! Press Enter to continue.");
-            }
-            else
+            if (!double.TryParse(priceInput, out double price))
             {
                 Console.WriteLine("Invalid price. Press Enter to retry.");
+                Console.ReadLine();
+                return;
             }
 
+            Console.Write("Enter quantity: ");
+            string? qtyInput = Console.ReadLine();
+
+            if (!int.TryParse(qtyInput, out int quantity) || quantity <= 0)
+            {
+                Console.WriteLine("Invalid quantity. Press Enter to retry.");
+                Console.ReadLine();
+                return;
+            }
+
+            manager.AddItem(name, price, quantity);
+            Console.WriteLine("Item added! Press Enter to continue.");
             Console.ReadLine();
         }
 
@@ -93,41 +109,39 @@ namespace POSSystem
 
             if (items.Count == 0)
             {
-                Console.WriteLine("Cart is empty. No item to remove. Press Enter to return to menu.");
+                Console.WriteLine("Cart is empty. No item to remove. Press Enter to return.");
                 Console.ReadLine();
                 return;
             }
 
-            Console.WriteLine("\nSelect item to remove:");
+            Console.WriteLine("=== Remove Item ===");
             for (int i = 0; i < items.Count; i++)
             {
-                Console.WriteLine($"{i + 1}. {items[i].ItemName} - Php {items[i].Price:F2}");
+                Console.WriteLine($"{i + 1}. {items[i].ItemName} x{items[i].Quantity} - Php {items[i].Price:F2}");
             }
-            Console.Write("Enter item number: ");
+
+            Console.Write("Enter item number to remove: ");
             if (int.TryParse(Console.ReadLine(), out int choice) && choice >= 1 && choice <= items.Count)
             {
                 string name = items[choice - 1].ItemName;
                 bool success = manager.RemoveItem(name);
-                if (success)
-                {
-                    Console.WriteLine("Item removed. Press Enter to continue.");
-                }
-                else
-                {
-                    Console.WriteLine("Item already removed or not found. Press Enter to continue.");
-                }
+                Console.WriteLine(success
+                    ? "Item removed. Press Enter to continue."
+                    : "Item not found. Press Enter to continue.");
             }
             else
             {
                 Console.WriteLine("Invalid selection. Press Enter to continue.");
             }
+
             Console.ReadLine();
         }
 
         static void ViewCart()
         {
             List<CartItems> items = manager.ViewItems();
-            Console.WriteLine("\n--- Cart Items ---");
+
+            Console.WriteLine("=== View Cart ===");
 
             if (items.Count == 0)
             {
@@ -138,8 +152,9 @@ namespace POSSystem
                 double total = 0;
                 for (int i = 0; i < items.Count; i++)
                 {
-                    Console.WriteLine($"{i + 1}. {items[i].ItemName} - Php {items[i].Price:F2}");
-                    total += items[i].Price;
+                    double subtotal = items[i].Price * items[i].Quantity;
+                    Console.WriteLine($"{i + 1}. {items[i].ItemName} x{items[i].Quantity} - Php {items[i].Price:F2} each | Subtotal: Php {subtotal:F2}");
+                    total += subtotal;
                 }
                 Console.WriteLine($"Total: Php {total:F2}");
             }
@@ -151,17 +166,19 @@ namespace POSSystem
         static void Checkout()
         {
             List<CartItems> items = manager.ViewItems();
+
             if (items.Count == 0)
             {
-                Console.WriteLine("Cart is empty. Nothing to checkout. Press Enter to return to menu.");
+                Console.WriteLine("Cart is empty. Nothing to checkout.");
                 Console.ReadLine();
                 return;
             }
 
-            Console.WriteLine("Checking out... Please wait.");
-            Thread.Sleep(3000); 
+            Console.WriteLine("Checking out...");
+            Thread.Sleep(2000);
             manager.Checkout();
-            Console.WriteLine("Cart cleared! Press Enter to return to menu.");
+
+            Console.WriteLine("Checkout complete. Cart cleared. Press Enter to continue.");
             Console.ReadLine();
         }
     }

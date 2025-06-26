@@ -14,10 +14,11 @@ namespace POSDataService
             if (item == null || string.IsNullOrWhiteSpace(item.ItemName)) return;
 
             using SqlConnection conn = new SqlConnection(connectionString);
-            string query = "INSERT INTO Cart (ItemName, ItemPrice) VALUES (@ItemName, @Price)";
+            string query = "INSERT INTO Cart (ItemName, ItemPrice, Quantity) VALUES (@ItemName, @Price, @Quantity)";
             using SqlCommand cmd = new SqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@ItemName", item.ItemName);
             cmd.Parameters.AddWithValue("@Price", item.Price);
+            cmd.Parameters.AddWithValue("@Quantity", item.Quantity);
             conn.Open();
             cmd.ExecuteNonQuery();
         }
@@ -40,7 +41,7 @@ namespace POSDataService
             List<CartItems> cart = new List<CartItems>();
 
             using SqlConnection conn = new SqlConnection(connectionString);
-            string query = "SELECT ItemName, ItemPrice FROM Cart";
+            string query = "SELECT ItemName, ItemPrice, Quantity FROM Cart";
             using SqlCommand cmd = new SqlCommand(query, conn);
             conn.Open();
 
@@ -48,8 +49,9 @@ namespace POSDataService
             while (reader.Read())
             {
                 string itemName = reader["ItemName"]?.ToString() ?? "";
-                double price = reader["ItemPrice"] is double p ? p : Convert.ToDouble(reader["ItemPrice"]);
-                cart.Add(new CartItems(itemName, price));
+                double price = Convert.ToDouble(reader["ItemPrice"]);
+                int quantity = Convert.ToInt32(reader["Quantity"]);
+                cart.Add(new CartItems(itemName, price, quantity));
             }
 
             return cart;

@@ -18,18 +18,18 @@ namespace POSDataService
         {
             userCarts[user] = new List<CartItems>
             {
-                new CartItems("Milk Tea", 120),
-                new CartItems("Fries", 65),
-                new CartItems("Burger", 99)
+                new CartItems("Milk Tea", 120, 1),
+                new CartItems("Fries", 65, 1),
+                new CartItems("Burger", 99, 1)
             };
         }
 
-        public void AddItem(string user, string itemName, double price)
+        public void AddItem(string user, string itemName, double price, int quantity)
         {
             if (!userCarts.ContainsKey(user))
                 userCarts[user] = new List<CartItems>();
 
-            userCarts[user].Add(new CartItems(itemName, price));
+            userCarts[user].Add(new CartItems(itemName, price, quantity));
         }
 
         public List<CartItems> GetAllItems(string user)

@@ -46,6 +46,10 @@ namespace POSGui
             columnHeader2 = new ColumnHeader();
             lblTotal = new Label();
             lblAmount = new Label();
+            btnMinus = new Button();
+            btnPlus = new Button();
+            label4 = new Label();
+            lblQty = new Label();
             columnHeader1 = new ColumnHeader();
             SuspendLayout();
             // 
@@ -59,6 +63,7 @@ namespace POSGui
             label1.BackColor = System.Drawing.Color.Transparent;
             label1.ForeColor = System.Drawing.SystemColors.ControlLight;
             label1.Name = "label1";
+            label1.Click += label1_Click;
             // 
             // label2
             // 
@@ -90,6 +95,7 @@ namespace POSGui
             btnAdd.ForeColor = System.Drawing.SystemColors.HotTrack;
             btnAdd.Name = "btnAdd";
             btnAdd.UseVisualStyleBackColor = true;
+            btnAdd.Click += btnAdd_Click_1;
             // 
             // btnRemove
             // 
@@ -129,21 +135,53 @@ namespace POSGui
             // lblTotal
             // 
             resources.ApplyResources(lblTotal, "lblTotal");
-            lblTotal.BackColor = System.Drawing.SystemColors.Window;
+            lblTotal.BackColor = System.Drawing.Color.Transparent;
+            lblTotal.ForeColor = System.Drawing.Color.White;
             lblTotal.Name = "lblTotal";
             lblTotal.Click += lblTotal_Click;
             // 
             // lblAmount
             // 
             resources.ApplyResources(lblAmount, "lblAmount");
-            lblAmount.BackColor = System.Drawing.SystemColors.Window;
+            lblAmount.BackColor = System.Drawing.Color.Transparent;
+            lblAmount.ForeColor = System.Drawing.Color.White;
             lblAmount.Name = "lblAmount";
+            // 
+            // btnMinus
+            // 
+            resources.ApplyResources(btnMinus, "btnMinus");
+            btnMinus.Name = "btnMinus";
+            btnMinus.UseVisualStyleBackColor = true;
+            // 
+            // btnPlus
+            // 
+            resources.ApplyResources(btnPlus, "btnPlus");
+            btnPlus.Name = "btnPlus";
+            btnPlus.UseVisualStyleBackColor = true;
+            btnPlus.Click += button1_Click;
+            // 
+            // label4
+            // 
+            resources.ApplyResources(label4, "label4");
+            label4.ForeColor = System.Drawing.Color.White;
+            label4.Name = "label4";
+            label4.Click += label4_Click;
+            // 
+            // lblQty
+            // 
+            resources.ApplyResources(lblQty, "lblQty");
+            lblQty.ForeColor = System.Drawing.Color.White;
+            lblQty.Name = "lblQty";
             // 
             // Form1
             // 
             resources.ApplyResources(this, "$this");
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = System.Drawing.SystemColors.ControlDark;
+            BackColor = System.Drawing.Color.SteelBlue;
+            Controls.Add(lblQty);
+            Controls.Add(label4);
+            Controls.Add(btnPlus);
+            Controls.Add(btnMinus);
             Controls.Add(lblAmount);
             Controls.Add(lblTotal);
             Controls.Add(lstView);
@@ -178,6 +216,10 @@ namespace POSGui
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private Label lblTotal;
         private Label lblAmount;
+        private Button btnMinus;
+        private Button btnPlus;
+        private Label label4;
+        private Label lblQty;
     }
 }
 

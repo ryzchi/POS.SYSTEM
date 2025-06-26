@@ -8,9 +8,9 @@ namespace POSBusinessLogic
     {
         private DBCartManager db = new DBCartManager();
 
-        public void AddItem(string name, double price)
+        public void AddItem(string name, double price, int quantity)
         {
-            CartItems item = new CartItems(name, price);
+            CartItems item = new CartItems(name, price, quantity);
             db.AddToCart(item);
         }
 

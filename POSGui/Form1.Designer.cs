@@ -152,6 +152,7 @@ namespace POSGui
             resources.ApplyResources(btnMinus, "btnMinus");
             btnMinus.Name = "btnMinus";
             btnMinus.UseVisualStyleBackColor = true;
+            btnMinus.Click += btnMinus_Click_1;
             // 
             // btnPlus
             // 

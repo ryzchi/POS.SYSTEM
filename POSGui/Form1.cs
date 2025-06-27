@@ -61,7 +61,7 @@ namespace POSGui
 
             txtName.Clear();
             txtPrice.Clear();
-            lblQty.Text = "1"; 
+            lblQty.Text = "1";
         }
 
         private async void btnRemove_Click(object sender, EventArgs e)
@@ -171,5 +171,9 @@ namespace POSGui
         private void btnAdd_Click_1(object sender, EventArgs e) { }
         private void button1_Click(object sender, EventArgs e) { }
         private void label4_Click(object sender, EventArgs e) { }
+        private void btnMinus_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

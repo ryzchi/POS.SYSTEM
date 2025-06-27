@@ -496,7 +496,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnMinus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>462, 136</value>
+    <value>474, 135</value>
   </data>
   <data name="btnMinus.Size" type="System.Drawing.Size, System.Drawing">
     <value>48, 35</value>
@@ -526,7 +526,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnPlus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>516, 136</value>
+    <value>528, 135</value>
   </data>
   <data name="btnPlus.Size" type="System.Drawing.Size, System.Drawing">
     <value>48, 35</value>

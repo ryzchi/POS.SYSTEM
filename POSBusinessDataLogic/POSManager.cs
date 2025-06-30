@@ -7,11 +7,19 @@ namespace POSBusinessLogic
     public class POSManager
     {
         private DBCartManager db = new DBCartManager();
+        private POSTextFile textFile = new POSTextFile();
+        private POSJsonFile jsonFile = new POSJsonFile();
 
         public void AddItem(string name, double price, int quantity)
         {
             CartItems item = new CartItems(name, price, quantity);
+
+            // Save to Database
             db.AddToCart(item);
+
+            // Save to text and json 
+            textFile.SaveCartItemToText(name, price, quantity);
+            jsonFile.SaveCartItemToJson(name, price, quantity);
         }
 
         public bool RemoveItem(string name)
